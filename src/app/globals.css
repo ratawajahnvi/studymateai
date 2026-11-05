@@ -1,0 +1,193 @@
+@import "tailwindcss";
+
+:root {
+  --bg-obsidian: #0c0617;
+  --bg-deep-purple: #160b28;
+  --bg-card-purple: #21113b;
+  --bg-elevated-purple: #2c184d;
+  --border-purple: #3e236b;
+  --accent-orange: #ff7b29;
+  --accent-orange-hover: #ff944d;
+  --accent-lavender: #c4b5fd;
+  --accent-lavender-bright: #ddd6fe;
+  --text-cream: #fff8ed;
+  --text-cream-muted: #d8cbe8;
+  --status-error: #ff6b6b;
+  --status-success: #4ade80;
+}
+
+body {
+  background-color: var(--bg-obsidian);
+  background-image:
+    radial-gradient(circle at 12% 8%, rgba(167, 139, 250, 0.14), transparent 32%),
+    radial-gradient(circle at 88% 14%, rgba(255, 123, 41, 0.12), transparent 28%),
+    linear-gradient(180deg, #120824 0%, #0c0617 100%);
+  color: var(--text-cream);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.55;
+  min-height: 100dvh;
+}
+
+/* Accessibility: Visually hidden utility keeping skip links & SR labels in accessibility tree */
+.visually-hidden:where(:not(:focus-within, :active)) {
+  position: absolute !important;
+  clip-path: inset(50%) !important;
+  overflow: hidden !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  white-space: nowrap !important;
+}
+
+/* Accessibility: High-contrast focus-visible outline */
+:where(a:any-link, button, input, select, textarea, [tabindex="0"]):focus-visible {
+  outline: 3px solid var(--accent-orange);
+  outline-offset: 2px;
+}
+
+/* Modern Web Guidance: Validate Input After Interaction (:user-invalid & :user-valid) */
+.field-hint {
+  display: block;
+  color: var(--text-cream-muted);
+  font-size: 0.825rem;
+  margin-bottom: 0.35rem;
+}
+
+.field-error-msg {
+  display: none;
+  color: var(--status-error);
+  font-size: 0.85rem;
+  margin-top: 0.35rem;
+}
+
+input:user-invalid,
+textarea:user-invalid,
+select:user-invalid,
+input.user-invalid-fallback,
+textarea.user-invalid-fallback,
+select.user-invalid-fallback {
+  border-color: var(--status-error) !important;
+  background-color: rgba(255, 107, 107, 0.1) !important;
+}
+
+input:user-invalid + .field-error-msg,
+textarea:user-invalid + .field-error-msg,
+input.user-invalid-fallback + .field-error-msg,
+textarea.user-invalid-fallback + .field-error-msg {
+  display: block;
+}
+
+input:user-valid,
+textarea:user-valid,
+input.user-valid-fallback,
+textarea.user-valid-fallback {
+  border-color: rgba(74, 222, 128, 0.65);
+}
+
+/* Expand mobile tap targets on coarse pointers */
+@media (pointer: coarse) {
+  input,
+  select,
+  button {
+    min-height: 48px;
+  }
+}
+
+/* Modern Web Guidance: Native Modal Dialog Scroll Containment & Backdrop */
+dialog:modal {
+  overscroll-behavior: contain;
+}
+
+dialog::backdrop {
+  overflow: hidden;
+  overscroll-behavior: contain;
+  background-color: rgba(12, 6, 23, 0.76);
+  backdrop-filter: blur(4px);
+}
+
+/* Modern Web Guidance: Responsive Data Table with @container queries & sticky headers */
+.table-wrapper {
+  overflow: auto;
+  max-inline-size: 100%;
+  max-block-size: min(560px, 78vh);
+  container-type: inline-size;
+  border-radius: 0.875rem;
+  border: 1px solid var(--border-purple);
+  background: var(--bg-deep-purple);
+}
+
+.responsive-data-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.responsive-data-table thead {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 2;
+  background: var(--bg-elevated-purple);
+}
+
+.responsive-data-table tbody th {
+  position: sticky;
+  inset-inline-start: 0;
+  z-index: 1;
+  background: var(--bg-card-purple);
+}
+
+@container (width < 640px) {
+  .responsive-data-table,
+  .responsive-data-table thead,
+  .responsive-data-table tbody,
+  .responsive-data-table tr,
+  .responsive-data-table th,
+  .responsive-data-table td {
+    display: block;
+  }
+
+  .responsive-data-table thead {
+    display: none;
+  }
+
+  .responsive-data-table tr {
+    margin-block-end: 1rem;
+    border: 1px solid var(--border-purple);
+    border-radius: 0.75rem;
+    padding: 0.5rem;
+    background: var(--bg-card-purple);
+  }
+
+  .responsive-data-table tbody th {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 2;
+    background: var(--bg-elevated-purple);
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .responsive-data-table td[data-label]::before {
+    content: attr(data-label) ": ";
+    font-weight: 600;
+    color: var(--accent-lavender);
+  }
+}
+
+/* Subtle Cute Halloween Animations */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes floatSlow {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+
+  .animate-float-slow {
+    animation: floatSlow 4.2s ease-in-out infinite;
+  }
+}
